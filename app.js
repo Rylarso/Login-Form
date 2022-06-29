@@ -9,9 +9,15 @@ var app = new Vue({
         newEmailInput: "",
         newPasswordInput: "",
         newFullnameInput: "",
+
+        page: "home",
     },
     
     methods: {
+        gotoLogin: function () {
+            page = "login";
+        },
+
         //get Session
         getSession: async function () {
             let response = await fetch(`${URL}/session`,{
@@ -40,6 +46,7 @@ var app = new Vue({
             }
            
         },
+
         //Attempt to login
         postSession: async function () {
             let loginCredentials = {
@@ -69,11 +76,12 @@ var app = new Vue({
                 console.log("Error", response.status, response);
             }
         },
+
         postUser: async function () {
             let newUserCredentials = {
                 username: this.newEmailInput,
+                fullname: this.newFullnameInput,
                 password: this.newPasswordInput,
-                fullName: this.newFullnameInput 
             }
             let response = await fetch(URL + "/user", {
                 method: "POST",
@@ -81,7 +89,7 @@ var app = new Vue({
                 headers: {
                     "Content-Type": "application/json"
                 },
-                credentials: "include",
+                // credentials: "include",
             });
             //parse response body
             let body = response.json();
@@ -92,7 +100,7 @@ var app = new Vue({
                 this.newEmailInput = "";
                 this.newPasswordInput = "";
                 this.newFullnameInput = "";
-            } else if (response.status == 500){
+            } else if (response.status == 401){
                 console.log("Could Not Create User");
                 this.newPasswordInput    = "";
             } else {

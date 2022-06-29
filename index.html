@@ -8,7 +8,12 @@
   </head>
   <body>
     <div id="app" style="text-align: center">
-      <div id="login">
+      <div id="home" v-if="page == home">
+        <h1>Welcome to the Form</h1>
+        <button v-on:click="gotoLogin()">Go to Login</button>
+        <button>Register</button>
+      </div>
+      <div id="login" v-else-if="page == login">
         <h1>Login Form</h1>
         <input v-model="loginEmailInput" placeholder="Email" /><br />
         <input
@@ -19,7 +24,7 @@
         <button v-on:click="postSession">Login</button>
       </div>
 
-      <div id="register">
+      <div id="register" v-else-if="page == register">
         <h1>Register Form</h1>
         <input v-model="newEmailInput" placeholder="Email" /><br />
         <input
