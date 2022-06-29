@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form</title>
+  </head>
+  <body>
+    <div id="app" style="text-align: center">
+      <div id="login">
+        <h1>Login Form</h1>
+        <input v-model="loginEmailInput" placeholder="Email" /><br />
+        <input
+          v-model="loginPasswordInput"
+          placeholder="Password"
+          type="password"
+        /><br />
+        <button v-on:click="postSession">Login</button>
+      </div>
+
+      <div id="register">
+        <h1>Register Form</h1>
+        <input v-model="newEmailInput" placeholder="Email" /><br />
+        <input
+          v-model="newPasswordInput"
+          placeholder="Password"
+          type="password"
+        /><br />
+        <input v-model="newFullnameInput" placeholder="Full Name" /><br />
+        <button v-on:click="postUser()">Sign Up</button>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
