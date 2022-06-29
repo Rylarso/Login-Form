@@ -8,12 +8,15 @@
   </head>
   <body>
     <div id="app" style="text-align: center">
-      <div id="home" v-if="page == home">
+      <!-- Main Page -->
+      <div id="home" v-if="page == 'home'">
         <h1>Welcome to the Form</h1>
-        <button v-on:click="gotoLogin()">Go to Login</button>
-        <button>Register</button>
+        <button v-on:click="page = 'login'">Go to Login</button>
+        <button v-on:click="page = 'register'">Register</button>
       </div>
-      <div id="login" v-else-if="page == login">
+
+      <!-- Login Page -->
+      <div id="login" v-else-if="page == 'login'">
         <h1>Login Form</h1>
         <input v-model="loginEmailInput" placeholder="Email" /><br />
         <input
@@ -21,10 +24,16 @@
           placeholder="Password"
           type="password"
         /><br />
-        <button v-on:click="postSession">Login</button>
+        <button v-on:click="postSession(), page = 'loggedIn'">Login</button>
       </div>
 
-      <div id="register" v-else-if="page == register">
+      <!-- Logged In Page -->
+      <div id="loggedIn" v-else-if="page == 'loggedIn'">
+        <h1>Logged In</h1>
+      </div>
+
+      <!-- Register Page -->
+      <div id="register" v-else-if="page == 'register'">
         <h1>Register Form</h1>
         <input v-model="newEmailInput" placeholder="Email" /><br />
         <input
@@ -33,7 +42,12 @@
           type="password"
         /><br />
         <input v-model="newFullnameInput" placeholder="Full Name" /><br />
-        <button v-on:click="postUser()">Sign Up</button>
+        <button v-on:click="postUser(), page = 'registered'">Sign Up</button>
+      </div>
+
+      <div id="registered" v-else-if="page == 'registered'">
+        <h1>You have Registered an Account</h1>
+        <button v-on:click="page = 'login'">Go to Login Page</button>
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>

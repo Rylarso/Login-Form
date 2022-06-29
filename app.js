@@ -14,10 +14,6 @@ var app = new Vue({
     },
     
     methods: {
-        gotoLogin: function () {
-            page = "login";
-        },
-
         //get Session
         getSession: async function () {
             let response = await fetch(`${URL}/session`,{
