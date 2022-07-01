@@ -28,8 +28,9 @@
       </div>
 
       <!-- Logged In Page -->
-      <div id="loggedIn" v-else-if="page == 'loggedIn'">
+      <div id="loggedIn" v-else-if="page == 'loggedIn' ">
         <h1>Logged In</h1>
+        <div v-for="thread in threads">{{ thread.name }}</div>
       </div>
 
       <!-- Register Page -->

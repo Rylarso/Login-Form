@@ -11,6 +11,7 @@ var app = new Vue({
         newFullnameInput: "",
 
         page: "home",
+        threads: [],
     },
     
     methods: {
@@ -27,6 +28,8 @@ var app = new Vue({
                 console.log("Logged in");
                 let data = await response.json();
                 console.log(data);
+                this.page = "loggedIn"
+                this.getThread();
 
             } else if (response.status == 401){
                 //not logged in
@@ -73,6 +76,7 @@ var app = new Vue({
             }
         },
 
+        //create user
         postUser: async function () {
             let newUserCredentials = {
                 username: this.newEmailInput,
@@ -101,6 +105,20 @@ var app = new Vue({
                 this.newPasswordInput    = "";
             } else {
                 console.log("Error", response.status, response);
+            }
+        },
+
+        getThread: async function (){
+            let response = fetch(URL + "/thread", {
+                credentials: "include"
+            });
+
+            //check response status
+            if (response.status == 200) {
+                let body = await response.json();
+                this.threads = body;
+            } else{
+                console.error("Error fetching threads: ", response.status);
             }
         }
     },
