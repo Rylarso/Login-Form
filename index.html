@@ -4,10 +4,11 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <title>Form</title>
   </head>
   <body>
-    <div id="app" style="text-align: center">
+    <div id="app">
       <!-- Main Page -->
       <div id="welcome" v-if="page == 'welcome'">
         <h1>Welcome to the Form</h1>
@@ -27,23 +28,29 @@
         <button v-on:click="postSession(), page = 'home'">Login</button>
       </div>
 
-      <!-- Logged In Page -->
+      <!-- Home Page -->
       <div id="home" v-else-if="page == 'home'">
-        <h1>Super Awsome Forms</h1>
+        <div class="nav">
+          <h1>Super Awsome Forms</h1>
+          <button class="button" v-on:click="page = 'welcome'">Logout</button>
+        </div>
+
         <div v-for="thread in threads">
-          <div
-            style="border: 1px solid black"
-            v-on:click="getSingularThread(thread._id)"
-          >
+          <div class="thread" v-on:click="getSingularThread(thread._id)">
             <h3>{{ thread.name }}</h3>
-            {{thread.description}} - {{thread.user.fullname}}
+            {{thread.description}}
           </div>
           <br />
         </div>
       </div>
 
-      <div v-if="page == 'thread'">
-        <h1>{{ currentThread.name }}</h1>
+      <!-- Individual Thread -->
+      <div id="individual-thread" v-if="page == 'thread'">
+        <div class="nav">
+          <h1>{{ currentThread.name }}</h1>
+          <button class="button" v-on:click="page = 'home'">Go Back</button>
+        </div>
+
         <div v-for="post in currentThread.posts">
           <p>
             {{ post.body }} -
