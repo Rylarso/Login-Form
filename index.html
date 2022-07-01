@@ -34,7 +34,7 @@
           <h1>Super Awsome Forms</h1>
           <button class="button" v-on:click="page = 'welcome'">Logout</button>
         </div>
-
+        <button v-on:click="page = 'create-thread'">Create New Thread</button>
         <div v-for="thread in threads">
           <div class="thread" v-on:click="getSingularThread(thread._id)">
             <h3>{{ thread.name }}</h3>
@@ -44,10 +44,20 @@
         </div>
       </div>
 
+      <!-- Create A New Thread -->
+      <div id="new-thread" v-if="page == 'create-thread'">
+        <h1>Create New Thread</h1>
+        <input v-model="newNameInput" placeholder="Title" /><br />
+        <input v-model="newDescriptionInput" placeholder="Description" /><br />
+        <input v-model="newCategoryInput" placeholder="Category" /><br />
+        <button v-on:click="postThread()">Create Thread</button>
+      </div>
+
       <!-- Individual Thread -->
       <div id="individual-thread" v-if="page == 'thread'">
         <div class="nav">
           <h1>{{ currentThread.name }}</h1>
+          <h2>{{currentThread.user.fullname}}</h2>
           <button class="button" v-on:click="page = 'home'">Go Back</button>
         </div>
 

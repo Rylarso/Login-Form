@@ -14,6 +14,10 @@ var app = new Vue({
 
         threads: [],
         currentThread: {},
+
+        newNameInput: "",
+        newDescriptionInput: "",
+        newCategoryInput: "",
     },
     
     methods: {
@@ -125,6 +129,7 @@ var app = new Vue({
                 console.error("Error fetching threads: ", response.status);
             }
         },
+        //go to specific thread with comments
         getSingularThread: async function (id){
             let response = await fetch(`${URL}/thread/${id}`, {
                 method: "GET",
@@ -139,6 +144,36 @@ var app = new Vue({
                 console.error("Error fetching this thread: ", response.status);
             }
     },
+    postThread: async function (){
+        let newThread = {
+            name: this.newNameInput,
+            description: this.newDescriptionInput,
+            category: this.newCategoryInput
+        }
+        let response = await fetch(URL + "/thread", {
+            method: "POST",
+            body: JSON.stringify(newThread),
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include",
+        });
+        //parse response body
+        let body = response.json();
+        console.log(body);
+        
+        if (response.status == 201){
+            console.log("Created Thread")
+            this.newNameInput = "";
+            this.newDescriptionInput = "";
+            this.newCategoryInput = "";
+            
+        } else if (response.status == 401){
+            console.log("Could Not Create Thread");
+        } else {
+            console.log("Error", response.status, response);
+        }
+    }
     },
 
     created: function () {
