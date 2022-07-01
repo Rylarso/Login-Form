@@ -10,7 +10,7 @@ var app = new Vue({
         newPasswordInput: "",
         newFullnameInput: "",
 
-        page: "home",
+        page: "welcome",
         threads: [],
     },
     
@@ -28,7 +28,7 @@ var app = new Vue({
                 console.log("Logged in");
                 let data = await response.json();
                 console.log(data);
-                this.page = "loggedIn"
+                this.page = "home"
                 this.getThread();
 
             } else if (response.status == 401){
@@ -109,7 +109,8 @@ var app = new Vue({
         },
 
         getThread: async function (){
-            let response = fetch(URL + "/thread", {
+            let response = await fetch(`${URL}/thread`, {
+                method: "GET",
                 credentials: "include"
             });
 
@@ -120,7 +121,7 @@ var app = new Vue({
             } else{
                 console.error("Error fetching threads: ", response.status);
             }
-        }
+        },
     },
 
     created: function () {

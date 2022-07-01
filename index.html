@@ -9,7 +9,7 @@
   <body>
     <div id="app" style="text-align: center">
       <!-- Main Page -->
-      <div id="home" v-if="page == 'home'">
+      <div id="welcome" v-if="page == 'welcome'">
         <h1>Welcome to the Form</h1>
         <button v-on:click="page = 'login'">Go to Login</button>
         <button v-on:click="page = 'register'">Register</button>
@@ -24,13 +24,19 @@
           placeholder="Password"
           type="password"
         /><br />
-        <button v-on:click="postSession(), page = 'loggedIn'">Login</button>
+        <button v-on:click="postSession(), page = 'home'">Login</button>
       </div>
 
       <!-- Logged In Page -->
-      <div id="loggedIn" v-else-if="page == 'loggedIn' ">
-        <h1>Logged In</h1>
-        <div v-for="thread in threads">{{ thread.name }}</div>
+      <div id="home" v-else-if="page == 'home'">
+        <h1>Super Awsome Forms</h1>
+        <div v-for="thread in threads">
+          <div style="border: 1px solid black">
+            <h3>{{ thread.name }}</h3>
+            {{thread.description}} - {{thread.user.fullname}}
+          </div>
+          <br />
+        </div>
       </div>
 
       <!-- Register Page -->
