@@ -31,7 +31,10 @@
       <div id="home" v-else-if="page == 'home'">
         <h1>Super Awsome Forms</h1>
         <div v-for="thread in threads">
-          <div style="border: 1px solid black">
+          <div
+            style="border: 1px solid black"
+            v-on:click="getSingularThread(thread._id)"
+          >
             <h3>{{ thread.name }}</h3>
             {{thread.description}} - {{thread.user.fullname}}
           </div>
@@ -39,8 +42,18 @@
         </div>
       </div>
 
+      <div v-if="page == 'thread'">
+        <h1>{{ currentThread.name }}</h1>
+        <div v-for="post in currentThread.posts">
+          <p>
+            {{ post.body }} -
+            <i>{{ post.user.fullname }}</i>
+          </p>
+        </div>
+      </div>
+
       <!-- Register Page -->
-      <div id="register" v-else-if="page == 'register'">
+      <div id="register" v-if="page == 'register'">
         <h1>Register Form</h1>
         <input v-model="newEmailInput" placeholder="Email" /><br />
         <input
@@ -52,7 +65,7 @@
         <button v-on:click="postUser(), page = 'registered'">Sign Up</button>
       </div>
 
-      <div id="registered" v-else-if="page == 'registered'">
+      <div id="registered" v-if="page == 'registered'">
         <h1>You have Registered an Account</h1>
         <button v-on:click="page = 'login'">Go to Login Page</button>
       </div>

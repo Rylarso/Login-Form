@@ -3,6 +3,8 @@ const URL = "https://forum2022.codeschool.cloud"
 var app = new Vue({
     el: "#app",
     data: {
+        page: "welcome",
+
         loginEmailInput: "",
         loginPasswordInput: "",
 
@@ -10,8 +12,8 @@ var app = new Vue({
         newPasswordInput: "",
         newFullnameInput: "",
 
-        page: "welcome",
         threads: [],
+        currentThread: {},
     },
     
     methods: {
@@ -108,6 +110,7 @@ var app = new Vue({
             }
         },
 
+        //get all the threads in a list
         getThread: async function (){
             let response = await fetch(`${URL}/thread`, {
                 method: "GET",
@@ -122,6 +125,20 @@ var app = new Vue({
                 console.error("Error fetching threads: ", response.status);
             }
         },
+        getSingularThread: async function (id){
+            let response = await fetch(`${URL}/thread/${id}`, {
+                method: "GET",
+                credentials: "include"
+            });
+
+            //check response status
+            if (response.status == 200) {
+                this.currentThread = await response.json();
+                this.page = "thread";
+            } else{
+                console.error("Error fetching this thread: ", response.status);
+            }
+    },
     },
 
     created: function () {
