@@ -109,7 +109,47 @@ app.post("/thread", async (req, res) => {
   }
 });
 
-app.delete("/thread/:id", (req, res) => {});
+app.delete("/thread/:id", async (req, res) => {
+    if (!req.user) {
+        res.status(401).json({ message: "unauthed" });
+        return;
+      }
+     let thread;
+
+     try {
+        thread = await Thread.findById(req.params.id);
+     } catch (err) {
+        res.status(500).json({
+            message:"failed to delete thread",
+            error: err
+        });
+        return;
+     }
+
+     if (thread === null) {
+        res.status(404).json({
+            message:"thread not found",
+            thread_id:req.params.thread_id
+        });
+     }
+
+        if (req.user.id != thread.user_id){
+            console.log("error cannot delete other peoples threads");
+            return;
+        }
+     
+     try {
+        await Thread.findByIdAndDelete(req.params.id);
+     }
+     catch (err){
+        res.status(500).json({
+            message: "failed to delete post",
+            error: err
+        });
+        return;
+     }
+     res.status(200).json(thread);
+});
 
 app.post("/post",  async (req, res) => {
     //get auth

@@ -56,7 +56,7 @@
             Delete Thread
           </button>
           <h3>{{ thread.name }}</h3>
-          <p>{{ thread.description }} - {{ thread.user.fullname }}</p>
+          <!-- <p>{{ thread.description }} - {{ thread.user.fullname }}</p> -->
         </div>
         <br />
         <button class="new-thread-button" v-on:click="loadNewThreadPage">
@@ -75,7 +75,7 @@
         <div class="forum-item" v-for="post in currentThread.posts">
           <p>
             {{ post.body }} -
-            <i>{{ post.user.fullname }}</i>
+            <!-- <i>{{ post.user.fullname }}</i> -->
           </p>
         </div>
 
