@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Form</title>
+  </head>
+  <body>
+    <div id="app">
+      <div id="top"></div>
+      <!-- Login with existing account -->
+      <div class="auth-page" id="login-page" v-if="page == 'login'">
+        <h1 class="auth-title">Forum App</h1>
+        <div id="login-area">
+          <h1>Login Form</h1>
+          <input placeholder="email" v-model="loginEmailInput" /><br />
+          <input
+            type="password"
+            placeholder="password"
+            v-model="loginPasswordInput"
+          /><br />
+          <button v-on:click="postSession">Login</button><br />
+          <button v-on:click="setPage('register')">Register New User</button>
+        </div>
+      </div>
+
+      <!-- Creating a new account -->
+      <div class="auth-page" id="register-page" v-else-if="page == 'register'">
+        <h1 class="auth-title">Forum App</h1>
+        <div id="register-area">
+          <h1>Registration Form</h1>
+          <input placeholder="new email" v-model="newEmailInput" /><br />
+          <input
+            type="password"
+            placeholder="new password"
+            v-model="newPasswordInput"
+          /><br />
+          <input placeholder="full name" v-model="newFullnameInput" /><br />
+          <button v-on:click="postUser">Register</button><br />
+          <button v-on:click="setPage('login')">Back to login</button>
+        </div>
+      </div>
+
+      <!-- Home page - displays all threads (high level, no comments) -->
+      <div class="forum-page" v-else-if="page == 'home'">
+        <button v-on:click="logoutUser" class="logout-button">Logout</button>
+        <h1>Forum App - Enjoy your stay</h1>
+        <div
+          class="forum-item"
+          v-on:click="getSingleThread(thread._id)"
+          v-for="thread in threads"
+        >
+          <button v-on:click.stop="deleteThread(thread._id)">
+            Delete Thread
+          </button>
+          <h3>{{ thread.name }}</h3>
+          <p>{{ thread.description }} - {{ thread.user.fullname }}</p>
+        </div>
+        <br />
+        <button class="new-thread-button" v-on:click="loadNewThreadPage">
+          Create New Thread
+        </button>
+        <a href="#top"
+          ><button class="home-button" v-on:click="loadHomePage">
+            Home
+          </button></a
+        >
+      </div>
+
+      <!-- Thread page - displays a single thread, along with comments -->
+      <div class="forum-page" v-else-if="page == 'thread'">
+        <h1 class="title">{{ currentThread.name }}</h1>
+        <div class="forum-item" v-for="post in currentThread.posts">
+          <p>
+            {{ post.body }} -
+            <i>{{ post.user.fullname }}</i>
+          </p>
+        </div>
+
+        <div class="forum-item" id="forum-add-post">
+          <button id="new-post-button" v-on:click="postPost(currentThread._id)">
+            Post Comment
+          </button>
+          <input v-model="newPostBody" />
+        </div>
+        <br />
+        <a href="#top"
+          ><button class="home-button" v-on:click="loadHomePage">
+            Home
+          </button></a
+        >
+      </div>
+
+      <!-- New Thread Page - form to create a new thread -->
+      <div class="forum-page" v-else-if="page == 'newThread'">
+        <div class="title">
+          <button class="new-thread-button" v-on:click="postThread()">
+            Create Thread
+          </button>
+          <input placeholder="Thread Name" v-model="newThreadName" />
+          <input
+            placeholder="Thread Description"
+            v-model="newThreadDescription"
+          />
+          <input placeholder="Category" v-model="newThreadCategory" />
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
