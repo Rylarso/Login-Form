@@ -73,14 +73,19 @@
       <!-- Thread page - displays a single thread, along with comments -->
       <div class="forum-page" v-else-if="page == 'thread'">
         <h1 class="title">{{ currentThread.name }}</h1>
+
+        <button v-on:click="putThread(currentThread._id), page = 'edit'">
+          Edit Thread
+        </button>
+
         <div class="forum-item" v-for="post in currentThread.posts">
           <p>
             {{ post.body }} -
             <!-- <i>{{ post.user.fullname }}</i> -->
+            <button v-on:click="deletePost(currentThread._id, post._id)">
+              Delete Post
+            </button>
           </p>
-          <button v-on:click="deletePost(currentThread._id, post._id)">
-            Delete Post
-          </button>
         </div>
 
         <div class="forum-item" id="forum-add-post">
@@ -95,6 +100,21 @@
             Home
           </button></a
         >
+      </div>
+
+      <!-- Editing Thread -->
+      <div v-else-if="page == 'edit'">
+        <h1>Edit Thread</h1>
+        <h3>Title</h3>
+        <input v-model="currentNameInput" />
+
+        <h3>Description</h3>
+        <input v-model="currentDescriptionInput" />
+
+        <h3>Category</h3>
+        <input v-model="currentCategoryInput" />
+
+        <button v-on:click="updateThread()">Submit</button>
       </div>
 
       <!-- New Thread Page - form to create a new thread -->

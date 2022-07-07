@@ -19,6 +19,15 @@ var app = new Vue({
         newThreadCategory: "",
 
         threads: [],
+
+        currentThreadName: "",
+        currentThreadDescription: "",
+        currentThreadCategory: "",
+        
+        currentNameInput: "",
+        currentDescriptionInput: "",
+        currentCategoryInput: "",
+
     },
     methods: {
         // change the page that the user sees
@@ -208,7 +217,7 @@ var app = new Vue({
 
             switch (response.status) {
             case 200:
-                
+                this.getSingleThread(id);
                 break;
             case 403:
                 alert("Cannot delete: User does not own the comment")
@@ -279,6 +288,43 @@ var app = new Vue({
             } else {
                 console.log("Error posting thread:", response.status);
             }
+        },
+
+        putThread: async function (id) {
+            for (i in this.threads){
+                if (this.threads[i]._id == id){
+                    
+                    this.currentThreadName = this.threads[i].name;
+                    this.currentThreadDescription = this.threads[i].description;
+                    this.currentThreadCategory = this.threads[i].category;
+                    currentThreadEditing = {
+                        threadName: this.currentThreadName,
+                        threadDescrption: this.currentThreadDescription,
+                        threadCategory: this.currentThreadCategory
+                    }
+                    this.currentNameInput = this.currentThreadName;
+                    this.currentDescriptionInput = this.currentThreadDescription;
+                    this.currentCategoryInput = this.currentThreadCategory;
+                    // console.log(this.currentNameInput);
+                    // console.log(this.currentThreadDescription);
+                    // console.log(this.currentThreadCategory);
+                }
+                // console.log(this.threads[i]);
+            }
+            
+        },
+        updateThread: function () {
+            this.currentThreadName = this.currentNameInput;
+            this.currentThreadDescription = this.currentDescriptionInput;
+            this.currentThreadCategory = this.currentCategoryInput;
+
+            currentThreadEditing = {
+                threadName: this.currentThreadName,
+                threadDescrption: this.currentThreadDescription,
+                threadCategory: this.currentThreadCategory
+            }
+            console.log(currentThreadEditing);
+            // return this.currentThreadName;
         }
     },
     created: function () {
