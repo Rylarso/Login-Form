@@ -197,6 +197,70 @@ app.post("/post",  async (req, res) => {
         res.status(201).json(thread.posts[thread.posts.length - 1])
 });
 
-app.delete("/thread/:thread_id/post/:post_id", (req, res) => {});
+app.delete("/thread/:thread_id/post/:post_id", async (req, res) => {
+    //get auth
+    if (!req.user) {
+        res.status(401).json({ message: "unauthed" });
+        return;
+      }
+
+      let thread;
+      let post;
+
+    try{
+        thread = await Thread.findOne({
+            _id: req.params.thread_id,
+            "posts._id": req.params.post_id,
+        });
+        console.log(thread);
+    } catch {
+        res.status(500).json({
+            message: "failed to delete post",
+            error: err,
+        });
+        return;
+        }
+    
+        if (!thread) {
+            res.status(404).json({
+                message: "thread not found when deleteing post",
+                thread_id: req.params.thread_id,
+            });
+        }
+
+    console.log(thread.posts);
+    let isSameUser = false;
+    for (let k in thread.posts){
+        if (req.params.post_id == thread.posts[k]._id){
+            post = thread.posts[k]
+            if (thread.posts[k].user_id == req.user.id){
+             isSameUser = true;
+            }; 
+        };    
+        
+        if (!isSameUser) {
+            res.status(403).json({message: "unauthorized"});
+            return;
+        }
+
+        try{
+            await Thread.findByIdAndUpdate(req.params.thread_id, {
+                $pull: {
+                    posts: {
+                        _id: req.params.post_id
+                    },
+                },
+        });
+        } catch (err) {
+            res.status(500).json({
+                message: "failed to insert post",
+                error: err,
+            });
+            return;
+        }
+        
+    } 
+    res.status(200).json(post);
+});
 
 module.exports = app;
