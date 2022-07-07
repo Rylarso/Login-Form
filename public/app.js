@@ -199,6 +199,25 @@ var app = new Vue({
                 break;
             }
         },
+
+        deletePost: async function (id, post_id) {
+            let response = await fetch(URL + '/thread/' + id + '/post/' + post_id, {
+                method: "DELETE",
+                credentials: "include"
+            });
+
+            switch (response.status) {
+            case 200:
+                
+                break;
+            case 403:
+                alert("Cannot delete: User does not own the comment")
+            default:
+                console.log("Error when deleting post:", response.status);
+                break;
+            }
+        },
+
         logoutUser: function () {
             this.setPage('login');
         },

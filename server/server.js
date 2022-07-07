@@ -228,7 +228,6 @@ app.delete("/thread/:thread_id/post/:post_id", async (req, res) => {
             });
         }
 
-    console.log(thread.posts);
     let isSameUser = false;
     for (let k in thread.posts){
         if (req.params.post_id == thread.posts[k]._id){

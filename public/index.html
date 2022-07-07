@@ -46,17 +46,18 @@
       <!-- Home page - displays all threads (high level, no comments) -->
       <div class="forum-page" v-else-if="page == 'home'">
         <button v-on:click="logoutUser" class="logout-button">Logout</button>
-        <h1>Forum App - Enjoy your stay</h1>
+        <h1>Forum App</h1>
         <div
           class="forum-item"
           v-on:click="getSingleThread(thread._id)"
           v-for="thread in threads"
         >
+          <h3>{{ thread.name }}</h3>
+          <p>{{ thread.description }}</p>
+          <!-- - {{ thread.user.fullname }}</p> -->
           <button v-on:click.stop="deleteThread(thread._id)">
             Delete Thread
           </button>
-          <h3>{{ thread.name }}</h3>
-          <!-- <p>{{ thread.description }} - {{ thread.user.fullname }}</p> -->
         </div>
         <br />
         <button class="new-thread-button" v-on:click="loadNewThreadPage">
@@ -77,6 +78,9 @@
             {{ post.body }} -
             <!-- <i>{{ post.user.fullname }}</i> -->
           </p>
+          <button v-on:click="deletePost(currentThread._id, post._id)">
+            Delete Post
+          </button>
         </div>
 
         <div class="forum-item" id="forum-add-post">
